@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+
+<label for="chat_id">chat id:</label>
+<input type="text" id="chat_id" name="chat_id">
+<form>
+  <label for="message">Enter your message:</label><br>
+  <textarea id="message" name="userMessage" rows="10" cols="40"></textarea><br>
+</form>
+
+
+<script>
+
+    function Send_to_bot() {
+        message = document.getElementById("message").value
+        chat_id = document.getElementById("chat_id").value
+        fetch(`https://api.telegram.org/bot8419192078:AAG_uZFUnKCvFwu_eCVoPzbqRuzFQ9ON1k8/sendMessage?chat_id=${chat_id}&text=${message}`)
+    }
+
+</script>
+
+
+<button type="button" onclick="Send_to_bot()">Send</button>
+
+
+</body>
+</html>
+
