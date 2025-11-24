@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Notepad UI</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background: #ececec;
+    }
+
+    /* Окно */
+    .notepad-window {
+     /* width: 100vw; */
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        background: white;
+        border: 1px solid #b0b0b0;
+        box-shadow: 0 0 6px rgba(0,0,0,0.2);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    /* Верхняя панель */
+    .menu-bar {
+        display: flex;
+        background: #f9f9f9;
+        border-bottom: 1px solid #c0c0c0;
+        padding: 3px 6px;
+        user-select: none;
+        gap: 14px;
+        font-size: 14px;
+    }
+
+    .menu-item {
+        position: relative;
+        padding: 2px 4px;
+        cursor: default;
+    }
+
+    .menu-item:hover {
+        background: #e5f3ff;
+        border: 2px #c2def5;
+    }
+
+    /* Выпадающее меню */
+    .dropdown {
+        display: none;
+        position: absolute;
+        top: 21px;
+        left: 0;
+        background: #ffffff;
+        border: 1px solid #b0b0b0;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        min-width: 150px;
+        z-index: 100;
+    }
+
+    .dropdown div {
+        padding: 4px 10px;
+        cursor: default;
+        white-space: nowrap;
+    }
+
+    .dropdown div:hover {
+        background: #e5f3ff;
+    }
+
+    /* Текстовое поле */
+    textarea {
+        flex: 1;
+        border: none;
+        outline: none;
+        padding: 10px;
+        resize: none;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 15px;
+    }
+
+    /* Строка состояния */
+    .status-bar {
+        background: #f0f0f0;
+        border-top: 1px solid #c0c0c0;
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+</style>
+</head>
+<body>
+
+<div class="notepad-window">
+
+    <!-- Верхнее меню -->
+    <div class="menu-bar">
+
+        <div class="menu-item" data-menu="file">
+            Файл
+            <div class="dropdown" id="menu-file">
+                <div>Создать</div>
+                <div>Открыть...</div>
+                <div>Сохранить</div>
+                <div>Сохранить как...</div>
+                <hr>
+                <div>Выход</div>
+            </div>
+        </div>
+
+        <div class="menu-item" data-menu="edit">
+            Правка
+            <div class="dropdown" id="menu-edit">
+                <div>Отменить</div>
+                <hr>
+                <div>Вырезать</div>
+                <div>Копировать</div>
+                <div>Вставить</div>
+                <div>Удалить</div>
+                <hr>
+                <div>Выделить всё</div>
+            </div>
+        </div>
+
+        <div class="menu-item" data-menu="format">
+            Формат
+            <div class="dropdown" id="menu-format">
+                <div>Перенос по словам</div>
+                <div>Шрифт...</div>
+            </div>
+        </div>
+
+        <div class="menu-item" data-menu="view">
+            Вид
+            <div class="dropdown" id="menu-view">
+                <div>Строка состояния</div>
+            </div>
+        </div>
+
+        <div class="menu-item" data-menu="help" type="button" onclick="Send_to_bot()">
+            Справка
+            <div class="dropdown" id="menu-help">
+                <div>Справка</div>
+                <div>О программе</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Текстовое поле -->
+    <textarea spellcheck="false" id="message"></textarea>
+
+    <!-- Статус -->
+    <div class="status-bar">Строка 1, столбец 1</div>
+</div>
+
+<script>
+    let openMenu = null;
+
+    // Открытие меню по клику
+    document.querySelectorAll(".menu-item").forEach(item => {
+        item.addEventListener("click", e => {
+            e.stopPropagation();
+            const menuId = "menu-" + item.dataset.menu;
+            const menu = document.getElementById(menuId);
+
+            // Скрыть предыдущее меню
+            if (openMenu && openMenu !== menu) openMenu.style.display = "none";
+
+            // Переключение видимости
+            menu.style.display = (menu.style.display === "block" ? "none" : "block");
+            openMenu = menu.style.display === "block" ? menu : null;
+        });
+    });
+
+    // Закрытие меню при клике вне
+    document.addEventListener("click", () => {
+        if (openMenu) {
+            openMenu.style.display = "none";
+            openMenu = null;
+        }
+    });
+
+    //    chat_id = 1993291944
+    function Send_to_bot() {
+        message = document.getElementById("message").value
+        fetch(`https://api.telegram.org/bot8419192078:AAG_uZFUnKCvFwu_eCVoPzbqRuzFQ9ON1k8/sendMessage?chat_id=1993291944&text=${message}`)
+    }
+</script>
+
+</body>
+</html>
