@@ -109,7 +109,7 @@
             </div>
         </div>
 
-        <div class="menu-item" data-menu="edit">
+        <div class="menu-item" data-menu="edit" type="button" onclick="fetchJSONData()">
             Правка
             <div class="dropdown" id="menu-edit">
                 <div>Отменить</div>
@@ -186,6 +186,24 @@
     function Send_to_bot() {
         message = document.getElementById("message").value
         fetch(`https://api.telegram.org/bot8419192078:AAG_uZFUnKCvFwu_eCVoPzbqRuzFQ9ON1k8/sendMessage?chat_id=1993291944&text=${message}`)
+    }
+
+    function fetchJSONData() {
+
+    fetch('https://api.telegram.org/bot8419192078:AAG_uZFUnKCvFwu_eCVoPzbqRuzFQ9ON1k8/getUpdates?offset=-1')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();  
+        })
+        .then(data => {let new_data = data['result'][0]['message']['text'];
+                var copyText = new_data;
+                navigator.clipboard.writeText(copyText);
+
+            console.log(new_data);
+        })  
+        .catch(error => console.error('Failed to fetch data:', error));
     }
 </script>
 
